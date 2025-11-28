@@ -1,0 +1,1 @@
+npx tailwindcss -i ./spp-app/Public/index.css -o ./spp-app/Public/output.css --watch

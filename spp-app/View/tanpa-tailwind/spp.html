@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Data SPP</title>
+    <link rel="stylesheet" href="/dashboard.css">
+    <link rel="stylesheet" href="/table.css">
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h3>SPP Panel</h3>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/siswa">Data Siswa</a>
+        <a href="/spp">Data SPP</a>
+        <a href="/pembayaran">Pembayaran</a>
+        <a href="/logout" class="logout">Logout</a>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+
+        <header>
+            <h2>Data SPP</h2>
+            <p>Kelola data SPP berdasarkan tahun & nominal</p>
+        </header>
+
+        <div class="box-action">
+            <a href="#tambah-form" class="btn-primary">+ Tambah Data SPP</a>
+        </div>
+
+        <!-- FORM TAMBAH -->
+        <div id="tambah-form" class="table-container" style="margin-bottom: 20px;">
+            <h3>Tambah Data SPP Baru</h3>
+            <form action="/spp/add" method="POST" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <input type="number" name="tahun" placeholder="Tahun (contoh: 2025)" required
+                    style="flex: 1; min-width: 150px; padding: 8px; border: 1px solid #ddd; border-radius: 6px;">
+                <input type="number" name="nominal" placeholder="Nominal (contoh: 500000)" required
+                    style="flex: 1; min-width: 150px; padding: 8px; border: 1px solid #ddd; border-radius: 6px;">
+                <button type="submit"
+                    style="padding: 8px 16px; background: #2e7d32; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">Simpan</button>
+            </form>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Tahun</th>
+                        <th>Nominal (Rp)</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <% if (!data || data.length===0) { %>
+                        <tr>
+                            <td colspan="3" class="empty">Belum ada data SPP.</td>
+                        </tr>
+                        <% } else { %>
+
+                            <% data.forEach((item, i)=> { %>
+                                <tr>
+                                    <td>
+                                        <%= i + 1 %>
+                                    </td>
+                                    <td>
+                                        <%= item.tahun %>
+                                    </td>
+                                    <td>Rp <%= item.nominal ? item.nominal.toLocaleString('id-ID') : '0' %>
+                                    </td>
+                                </tr>
+                                <% }) %>
+
+                                    <% } %>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</body>
+
+</html>
