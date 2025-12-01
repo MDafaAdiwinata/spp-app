@@ -1,6 +1,8 @@
 const express = require("express");
 const path = require("path");
 const db = require("./spp-app/database");
+const session = require("express-session");
+const bcrypt = require("bcryptjs");
 const app = express();
 
 // Middleware
@@ -8,6 +10,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "spp-app/Public")));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "spp-app/View"));
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "spp-secret",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 // ----------------------------------------------------------
 // 1. ROUTE GET (MENAMPILKAN HALAMAN)
@@ -97,12 +107,68 @@ app.get("/pembayaran", (req, res) => {
 app.post("/login", (req, res) => {
   const { username, password } = req.body;
 
-  // Simple login validation (for demo purposes)
-  if (username && password) {
-    res.redirect("/dashboard");
-  } else {
-    res.redirect("/");
+  // Pastikan username & password diisi
+  if (!username || !password) {
+    req.session.destroy(() => {});
+    return res.send("Harap isi username dan password!");
   }
+
+  db.query(
+    "SELECT * FROM petugas WHERE username = ? LIMIT 1",
+    [username],
+    (err, rows) => {
+      if (err) {
+        console.error("DB Error:", err);
+        req.session.destroy(() => {});
+        return res.send("Terjadi kesalahan server!");
+      }
+
+      // Username tidak ditemukan
+      if (!rows || rows.length === 0) {
+        req.session.destroy(() => {});
+        return res.send("Username tidak ditemukan!");
+      }
+
+      const user = rows[0];
+      const storedPassword = user.password;
+
+      let passwordValid = false;
+
+      // Jika password di DB berupa bcrypt
+      if (
+        storedPassword.startsWith("$2a$") ||
+        storedPassword.startsWith("$2b$")
+      ) {
+        try {
+          passwordValid = bcrypt.compareSync(password, storedPassword);
+        } catch (e) {
+          console.error("bcrypt error:", e);
+          passwordValid = false;
+        }
+      } else {
+        // Jika password masih plaintext
+        passwordValid = password === storedPassword;
+      }
+
+      // Password salah
+      if (!passwordValid) {
+        req.session.destroy(() => {});
+        return res.send("Password salah!");
+      }
+
+      // Login OK → simpan session
+      req.session.user = {
+        id: user.id_petugas,
+        username: user.username,
+        nama: user.nama_petugas,
+        level: user.level,
+      };
+
+      console.log("User logged in:", req.session.user);
+
+      return res.redirect("/dashboard");
+    }
+  );
 });
 
 // Tambah Siswa
