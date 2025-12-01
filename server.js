@@ -19,6 +19,12 @@ app.use(
   })
 );
 
+// Middleware cek login
+function cekLogin(req, res, next) {
+  if (!req.session.user) return res.redirect("/");
+  next();
+}
+
 // ----------------------------------------------------------
 // 1. ROUTE GET (MENAMPILKAN HALAMAN)
 // ----------------------------------------------------------
@@ -27,7 +33,7 @@ app.get("/", (req, res) => {
   res.render("login");
 });
 
-app.get("/dashboard", (req, res) => {
+app.get("/dashboard", cekLogin, (req, res) => {
   // Get total siswa
   db.query("SELECT COUNT(*) as count FROM siswa", (err, results) => {
     const totalSiswa = results[0].count;
@@ -53,7 +59,7 @@ app.get("/dashboard", (req, res) => {
 });
 
 // Halaman Data Siswa
-app.get("/siswa", (req, res) => {
+app.get("/siswa", cekLogin, (req, res) => {
   db.query("SELECT * FROM siswa", (err, results) => {
     if (err) {
       console.error(err);
@@ -64,7 +70,7 @@ app.get("/siswa", (req, res) => {
 });
 
 // Halaman Data SPP
-app.get("/spp", (req, res) => {
+app.get("/spp", cekLogin, (req, res) => {
   db.query("SELECT * FROM spp", (err, results) => {
     if (err) {
       console.error(err);
@@ -75,7 +81,7 @@ app.get("/spp", (req, res) => {
 });
 
 // Halaman Pembayaran
-app.get("/pembayaran", (req, res) => {
+app.get("/pembayaran", cekLogin, (req, res) => {
   db.query("SELECT * FROM pembayaran", (err, results) => {
     if (err) {
       console.error(err);
@@ -172,7 +178,7 @@ app.post("/login", (req, res) => {
 });
 
 // Tambah Siswa
-app.post("/siswa/add", (req, res) => {
+app.post("/siswa/add", cekLogin, (req, res) => {
   const { nis, nama, kelas, alamat } = req.body;
 
   const sql = `INSERT INTO siswa (nisn, nama, kelas, alamat) VALUES (?,?,?,?)`;
@@ -186,7 +192,7 @@ app.post("/siswa/add", (req, res) => {
 });
 
 // Tambah SPP
-app.post("/spp/add", (req, res) => {
+app.post("/spp/add", cekLogin, (req, res) => {
   const { tahun, nominal } = req.body;
 
   const sql = `INSERT INTO spp (tahun, nominal) VALUES (?,?)`;
@@ -200,7 +206,7 @@ app.post("/spp/add", (req, res) => {
 });
 
 // Tambah Pembayaran
-app.post("/pembayaran/add", (req, res) => {
+app.post("/pembayaran/add", cekLogin, (req, res) => {
   const { id_siswa, id_spp, jumlah_bayar } = req.body;
 
   const sql = `INSERT INTO pembayaran 
@@ -217,7 +223,7 @@ app.post("/pembayaran/add", (req, res) => {
 });
 
 // Logout
-app.get("/logout", (req, res) => {
+app.get("/logout", cekLogin, (req, res) => {
   res.redirect("/");
 });
 
