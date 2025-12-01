@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "flowbite";
+
+/* Background kotak-kotak */
+.bg-pattern {
+  background: linear-gradient(to right, #f0f0f0 1px, transparent 1px),
+    linear-gradient(to bottom, #f0f0f0 1px, transparent 1px);
+  background-size: 6rem 4rem;
+}
+
+/* Background radial biru */
+.bg-radial {
+  background: radial-gradient(circle 500px at 50% 200px, #c9ebff, transparent);
+}

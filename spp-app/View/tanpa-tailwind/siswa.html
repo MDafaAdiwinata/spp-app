@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Data Siswa</title>
+    <link rel="stylesheet" href="/dashboard.css">
+    <link rel="stylesheet" href="/table.css">
+</head>
+
+<body>
+
+    <!-- top quick form removed to avoid duplicate forms; use the 'Tambah Siswa Baru' section below -->
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h3>SPP Panel</h3>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/siswa">Data Siswa</a>
+        <a href="/spp">Data SPP</a>
+        <a href="/pembayaran">Pembayaran</a>
+        <a href="/logout" class="logout">Logout</a>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+        <header>
+            <h2>Data Siswa</h2>
+            <p>Kelola data siswa dengan mudah & cepat</p>
+        </header>
+
+        <div class="box-action">
+            <a href="#tambah-form" class="btn-primary">+ Tambah Siswa</a>
+        </div>
+
+        <!-- FORM TAMBAH -->
+        <div id="tambah-form" class="table-container" style="margin-bottom: 20px;">
+            <h3>Tambah Siswa Baru</h3>
+            <form action="/siswa/add" method="POST" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <input type="number" name="nis" placeholder="NIS" required
+                    style="flex: 1; min-width: 150px; padding: 8px; border: 1px solid #ddd; border-radius: 6px;">
+                <input type="text" name="nama" placeholder="Nama" required
+                    style="flex: 1; min-width: 150px; padding: 8px; border: 1px solid #ddd; border-radius: 6px;">
+                <input type="text" name="kelas" placeholder="Kelas" required
+                    style="flex: 1; min-width: 150px; padding: 8px; border: 1px solid #ddd; border-radius: 6px;">
+                <button type="submit"
+                    style="padding: 8px 16px; background: #2e7d32; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">Simpan</button>
+            </form>
+        </div>
+
+        <!-- TABEL DATA -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>NIS</th>
+                        <th>Nama</th>
+                        <th>Kelas</th>
+                        <th>Alamat</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <% if (!data || data.length===0) { %>
+                        <tr>
+                            <td colspan="5" class="empty">Tidak ada data siswa.</td>
+                        </tr>
+                        <% } else { %>
+
+                            <% data.forEach((s, i)=> { %>
+                                <tr>
+                                    <td>
+                                        <%= i + 1 %>
+                                    </td>
+                                    <td>
+                                        <%= s.nis || s.nisn || '' %>
+                                    </td>
+                                    <td>
+                                        <%= s.nama %>
+                                    </td>
+                                    <td>
+                                        <%= s.kelas %>
+                                    </td>
+                                    <td>
+                                        <%= s.alamat || '-' %>
+                                    </td>
+                                </tr>
+                                <% }) %>
+
+                                    <% } %>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

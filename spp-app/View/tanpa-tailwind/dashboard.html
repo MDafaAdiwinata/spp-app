@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard SPP</title>
+    <link rel="stylesheet" href="/dashboard.css">
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <h3>SPP Panel</h3>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/siswa">Data Siswa</a>
+        <a href="/spp">Data SPP</a>
+        <a href="/pembayaran">Pembayaran</a>
+        <a href="/logout" class="logout">Logout</a>
+    </div>
+
+    <div class="main">
+        <header>
+            <h2>Dashboard</h2>
+            <p>Selamat datang, <%= user.username %>
+            </p>
+        </header>
+
+        <section class="cards">
+            <div class="card">
+                <h4>Total Siswa</h4>
+                <p class="angka">
+                    <%= totalSiswa || 0 %>
+                </p>
+            </div>
+
+            <div class="card green">
+                <h4>Total Pembayaran</h4>
+                <p class="angka">Rp <%= totalBayar || 0 %>
+                </p>
+            </div>
+
+            <div class="card red">
+                <h4>Tunggakan</h4>
+                <p class="angka">Rp <%= totalTunggakan || 0 %>
+                </p>
+            </div>
+        </section>
+
+        <section class="info-box">
+            <h3>Informasi</h3>
+            <p>Sistem Pembayaran SPP membantu admin memproses data siswa, SPP, dan transaksi secara cepat dan aman.</p>
+        </section>
+    </div>
+
+</body>
+
+</html>

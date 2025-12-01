@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pembayaran SPP</title>
+    <link rel="stylesheet" href="/dashboard.css">
+    <link rel="stylesheet" href="/table.css">
+    <style>
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #283e51;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h3>SPP Panel</h3>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/siswa">Data Siswa</a>
+        <a href="/spp">Data SPP</a>
+        <a href="/pembayaran">Pembayaran</a>
+        <a href="/logout" class="logout">Logout</a>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+
+        <header>
+            <h2>Pembayaran SPP</h2>
+            <p>Proses pembayaran SPP siswa</p>
+        </header>
+
+        <!-- FORM PEMBAYARAN -->
+        <div class="table-container" style="margin-bottom: 20px;">
+            <h3>Tambah Pembayaran Baru</h3>
+            <form action="/pembayaran/add" method="POST">
+
+                <div class="form-group">
+                    <label>Pilih Siswa</label>
+                    <select name="id_siswa" required>
+                        <option value="">-- Pilih Siswa --</option>
+                        <% if (siswa && siswa.length> 0) { %>
+                            <% siswa.forEach(s=> { %>
+                                <option value="<%= s.id %>">
+                                    <%= s.nis %> - <%= s.nama %> - <%= s.kelas %>
+                                </option>
+                                <% }) %>
+                                    <% } %>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Pilih SPP (Tahun)</label>
+                    <select name="id_spp" required>
+                        <option value="">-- Pilih SPP --</option>
+                        <% if (spp && spp.length> 0) { %>
+                            <% spp.forEach(p=> { %>
+                                <option value="<%= p.id %>">Tahun <%= p.tahun %> - Rp <%= p.nominal ?
+                                            p.nominal.toLocaleString('id-ID') : '0' %>
+                                </option>
+                                <% }) %>
+                                    <% } %>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Jumlah Bayar (Rp)</label>
+                    <input type="number" name="jumlah_bayar" placeholder="Masukkan nominal pembayaran" required>
+                </div>
+
+                <button type="submit" class="btn-primary"
+                    style="padding: 10px 20px; background: #2e7d32; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">Proses
+                    Pembayaran</button>
+            </form>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

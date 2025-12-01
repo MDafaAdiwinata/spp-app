@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Sistem SPP</title>
+
+    <!-- Website Icon -->
+    <link rel="icon" type="image/png" href="/img/logo.png" />
+
+    <!-- TailwindCSS -->
+    <link rel="stylesheet" href="/output.css">
+
+    <!-- Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body class="font-jakarta">
+    <section class="bg-[#f0f0f0] h-screen flex flex-col items-center justify-center relative">
+            <div class="absolute inset-0 -z-10 h-full w-full bg-white bg-pattern">
+                <div class="absolute inset-0 bg-radial"></div>
+            </div>
+        <div class="container px-4 mx-auto">
+            <form
+                class="max-w-md mx-auto bg-white/90 backdrop-blur-md border border-black/10 hover:border-black/30 transition duration-300 shadow hover:shadow-lg p-6 md:p-8 rounded-2xl"
+                method="POST" action="/login">
+                <div class="mx-auto text-center mb-6">
+                    <div class="flex mx-auto mb-4 items-center justify-center gap-2 md:gap-4">
+                        <img src="/img/bi-logo.png" class="w-14 md:w-18" alt="">
+                        <img src="/img/kemekdibud.png" class="w-14 md:w-18" alt="">
+                    </div>
+                    <h1 class="text-[var(--txt-primary2)] text-md sm:text-lg md:text-xl mb-4">
+                        Silahkan Login Untuk <br> Mengakses Dashboard SPP
+                    </h1>
+                </div>
+                <div class="mb-6">
+                    <label for="username" class="block mb-2 text-sm sm:text-md md:text-lg font-medium text-black/80">
+                        Username:
+                    </label>
+                    <input type="text" id="username"
+                        class="bg-transparent border border-black/50 text-black/80 text-md rounded-xl focus:ring-black focus:border-black/50 block w-full px-3 py-2"
+                        name="username" />
+                </div>
+                <div class="mb-5">
+                    <label for="password" class="block mb-2 text-sm sm:text-md md:text-lg font-medium text-black/80">
+                        Password:
+                    </label>
+                    <input type="password" id="password" name="password"
+                        class="bg-transparent border border-black/50 text-black/80 text-md rounded-xl focus:ring-black focus:border-black/50 block w-full px-3 py-2" />
+                </div>
+                <button type="submit"
+                    class="mt-4 text-white bg-green-600 hover:bg-green-800/80 focus:ring-3 focus:outline-none focus:ring-[var(--bg-primary)] font-bold rounded-xl text-lg w-full px-5 py-2 text-center cursor-pointer transition duration-500">
+                    LOGIN
+                </button>
+            </form>
+        </div>
+    </section>
+
+</body>
+
+</html>
