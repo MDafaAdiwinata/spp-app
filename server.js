@@ -34,27 +34,30 @@ app.get("/", (req, res) => {
 });
 
 app.get("/dashboard", cekLogin, (req, res) => {
-  // Get total siswa
-  db.query("SELECT COUNT(*) as count FROM siswa", (err, results) => {
-    const totalSiswa = results[0].count;
+  db.query("SELECT COUNT(*) AS total FROM siswa", (err1, rows1) => {
+    const totalSiswa = rows1?.[0]?.total || 0;
 
-    // Get total pembayaran
-    db.query(
-      "SELECT SUM(jumlah_bayar) as total FROM pembayaran",
-      (err, results) => {
-        const totalBayar = results[0].total || 0;
+    db.query("SELECT COUNT(*) AS total FROM spp", (err2, rows2) => {
+      const totalSPP = rows2?.[0]?.total || 0;
 
-        // Simple mock user object
-        const user = { username: "Admin" };
+      db.query(
+        "SELECT SUM(jumlah_bayar) AS total FROM pembayaran",
+        (err3, rows3) => {
+          const totalBayar = rows3?.[0]?.total || 0;
 
-        res.render("dashboard", {
-          user: user,
-          totalSiswa: totalSiswa,
-          totalBayar: totalBayar,
-          totalTunggakan: 0,
-        });
-      }
-    );
+          const totalTunggakan = 0;
+
+          // WAJIB: totalSPP dikirim ke EJS
+          res.render("dashboard", {
+            user: req.session.user,
+            totalSiswa: totalSiswa,
+            totalSPP: totalSPP,
+            totalBayar: totalBayar,
+            totalTunggakan: totalTunggakan,
+          });
+        }
+      );
+    });
   });
 });
 
