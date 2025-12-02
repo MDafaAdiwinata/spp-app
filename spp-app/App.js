@@ -121,6 +121,7 @@ app.post("/login", (req, res) => {
 app.get("/dashboard", cekLogin, (req, res) => {
   db.query("SELECT COUNT(*) as total FROM siswa", (err, rows) => {
     const totalSiswa = rows && rows[0] ? rows[0].total : 0;
+    const totalSPP = rows && rows[0] ? rows[0].total : 0;
 
     db.query(
       "SELECT SUM(jumlah_bayar) as total FROM pembayaran",
@@ -135,6 +136,7 @@ app.get("/dashboard", cekLogin, (req, res) => {
           totalSiswa,
           totalBayar,
           totalTunggakan,
+          totalSPP,
         });
       }
     );
