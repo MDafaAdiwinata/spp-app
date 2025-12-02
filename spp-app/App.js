@@ -119,32 +119,36 @@ app.post("/login", (req, res) => {
 
 // Dashboard
 app.get("/dashboard", cekLogin, (req, res) => {
-  db.query("SELECT COUNT(*) as total FROM siswa", (err, rows1) => {
-    const totalSiswa = rows1 && rows1[0] ? rows1[0].total : 0;
+  // Total Siswa
+  db.query("SELECT COUNT(*) AS total FROM siswa", (err1, rows1) => {
+    const totalSiswa = rows1?.[0]?.total || 0;
 
-    db.query("SELECT COUNT(*) as total FROM spp", (err, rows2) => {
-      const totalSPP = rows2 && rows2[0] ? rows2[0].total : 0;
+    // Total SPP
+    db.query("SELECT COUNT(*) AS total FROM spp", (err2, rows2) => {
+      const totalSPP = rows2?.[0]?.total || 0;
 
+      // Total pembayaran
       db.query(
-        "SELECT SUM(jumlah_bayar) as total FROM pembayaran",
-        (err, rows3) => {
-          const totalBayar =
-            rows3 && rows3[0] && rows3[0].total ? rows3[0].total : 0;
+        "SELECT SUM(jumlah_bayar) AS total FROM pembayaran",
+        (err3, rows3) => {
+          const totalBayar = rows3?.[0]?.total || 0;
 
-          const totalTunggakan = 0; // nanti bisa dihitung
+          const totalTunggakan = 0;
 
+          // ⛔ Pastikan totalSPP dikirim ke EJS
           res.render("dashboard", {
             user: req.session.user,
             totalSiswa,
+            totalSPP,
             totalBayar,
             totalTunggakan,
-            totalSPP,
           });
         }
       );
     });
   });
 });
+
 
 
 // Logout
