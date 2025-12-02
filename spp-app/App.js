@@ -119,29 +119,33 @@ app.post("/login", (req, res) => {
 
 // Dashboard
 app.get("/dashboard", cekLogin, (req, res) => {
-  db.query("SELECT COUNT(*) as total FROM siswa", (err, rows) => {
-    const totalSiswa = rows && rows[0] ? rows[0].total : 0;
-    const totalSPP = rows && rows[0] ? rows[0].total : 0;
+  db.query("SELECT COUNT(*) as total FROM siswa", (err, rows1) => {
+    const totalSiswa = rows1 && rows1[0] ? rows1[0].total : 0;
 
-    db.query(
-      "SELECT SUM(jumlah_bayar) as total FROM pembayaran",
-      (err, rows) => {
-        const totalBayar = rows && rows[0] && rows[0].total ? rows[0].total : 0;
+    db.query("SELECT COUNT(*) as total FROM spp", (err, rows2) => {
+      const totalSPP = rows2 && rows2[0] ? rows2[0].total : 0;
 
-        // Tunggakan = jumlah siswa * nominal SPP - total bayar (simplified)
-        const totalTunggakan = 0; // placeholder
+      db.query(
+        "SELECT SUM(jumlah_bayar) as total FROM pembayaran",
+        (err, rows3) => {
+          const totalBayar =
+            rows3 && rows3[0] && rows3[0].total ? rows3[0].total : 0;
 
-        res.render("dashboard", {
-          user: req.session.user,
-          totalSiswa,
-          totalBayar,
-          totalTunggakan,
-          totalSPP,
-        });
-      }
-    );
+          const totalTunggakan = 0; // nanti bisa dihitung
+
+          res.render("dashboard", {
+            user: req.session.user,
+            totalSiswa,
+            totalBayar,
+            totalTunggakan,
+            totalSPP,
+          });
+        }
+      );
+    });
   });
 });
+
 
 // Logout
 app.get("/logout", (req, res) => {
